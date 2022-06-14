@@ -1,0 +1,20 @@
+---
+# install maven
+- name: get maven 
+  unarchive:
+    src: https://dlcdn.apache.org/maven/maven-{{maven_major_version}}/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz
+    remote_src: yes
+    dest: /opt/
+
+- name: prepare maven env file
+  lineinfile:
+    dest: /etc/profile.d/maven.sh
+    create: yes
+    line: "{{ item }}"
+  loop:
+  - 'export M2_HOME=/opt/apache-maven-{{maven_version}}'
+  - 'export M2=$M2_HOME/bin'
+  - 'export PATH=M2:$PATH'
+
+- name: run maven.sh
+  shell: . /etc/profile.d/maven.sh

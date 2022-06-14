@@ -1,0 +1,19 @@
+---
+- name: provision developpers VMs
+  hosts: dev 
+  become: yes
+  vars:
+  - java_package: openjdk-8-jdk
+  - maven_major_version: 3
+  - maven_version: 3.8.6
+  tasks:
+  - name: install java
+    include_tasks: tasks/java.yml
+  - name: install maven {{maven_major_version}}
+    include_tasks: tasks/maven.yml
+    
+  - name: install utilities
+    apt:
+      name:
+      - git
+      - nano
