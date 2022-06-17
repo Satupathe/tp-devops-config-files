@@ -7,8 +7,8 @@ Type=forking
 User=sonar
 Group=sonar
 
-ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
-ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+ExecStart=/opt/sonarqube-{{sonarqube_version}}/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube-{{sonarqube_version}}/bin/linux-x86-64/sonar.sh stop
 
 Restart=always
 

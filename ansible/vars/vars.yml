@@ -3,3 +3,6 @@ maven_major_version: 3
 maven_version: 3.8.6
 sonarqube_path: /opt/sonarqube
 sonarqube_version: 9.5.0.56709
+tomcat_major_version: 8
+tomcat_version: 8.5.81
+tomcat_path: /opt

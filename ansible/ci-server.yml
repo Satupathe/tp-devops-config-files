@@ -6,6 +6,10 @@
   - vars/vars.yml
  
   tasks:
+  - name: install utilities
+    package:
+      name:
+      - git
   - name: Include distribution specific vars file
     include_vars: vars/{{ansible_os_family}}-vars.yml
   - name: install java
@@ -14,8 +18,31 @@
     include_tasks: tasks/maven.yml
   - name: install jenkins
     include_tasks: tasks/jenkins.yml
+    tags: 
+    - jenkins
   - name: install sonarqube {{sonarqube_version}}
     include_tasks: tasks/sonarqube.yml
+    tags: 
+    - sonarqube
   - name: install artifactory
     include_tasks: tasks/artifactory.yml
+    tags:
+    - artifactory
+  
+  - block:
+    - name: install docker engine
+      include_tasks: tasks/{{ansible-os-family}}-docker.yml
+    - name: add jenkins user to docker group
+      user:
+        name: jenkins
+        groups: docker
+        append: yes
+      notify: evaluate new group
+    tags:
+    - docker
+    
+  handlers:
+  - name: evaluate new group
+    meta: reset_connection
+  
   

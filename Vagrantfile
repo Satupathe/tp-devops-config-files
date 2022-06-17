@@ -35,6 +35,15 @@ Vagrant.configure("2") do |config|
         end
         subconfig.vm.provision "shell", inline: $script_inject_pubkey
     end
+    config.vm.define "prod-server" do |subconfig|
+        subconfig.vm.box = "centos/7"
+        subconfig.vm.hostname = "tomcat"
+        subconfig.vm.network "private_network", ip: "192.168.60.200"
+        subconfig.vm.provider "virtualbox" do |vb|
+            vb.memory = "2048"
+        end
+        subconfig.vm.provision "shell", inline: $script_inject_pubkey
+    end
 
 end
 

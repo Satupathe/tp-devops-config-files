@@ -1,0 +1,14 @@
+---
+- name: provision jenkins 
+  hosts: prod
+  become: yes
+  vars_files:
+  - vars/vars.yml
+ 
+  tasks:
+  - name: Include distribution specific vars file
+    include_vars: vars/{{ansible_os_family}}-vars.yml
+  - name: install java
+    include_tasks: tasks/java-{{ ansible_os_family }}.yml
+  - name: install tomcat 
+    include_tasks: tasks/tomcat.yml

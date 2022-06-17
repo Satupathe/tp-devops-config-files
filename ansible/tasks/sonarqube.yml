@@ -9,15 +9,11 @@
   package:
     name: unzip
 
-- name: download sonarqube 
-  get_url:
-    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-{{sonarqube_version}}.zip
-    dest: /opt/
-
 - name: extract sonarqube archive
   unarchive:
-    src: /opt/sonarqube-{{sonarqube_version}}.zip
-    dest: /opt/sonarqube
+    src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-{{sonarqube_version}}.zip
+    dest: /opt/
+    keep_newer: yes
     owner: sonar
     group: sonar
     remote_src: yes
@@ -31,3 +27,5 @@
   systemd:
     name: sonarqube
     state: started
+    enabled: yes
+    daemon_reload: yes

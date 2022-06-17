@@ -1,0 +1,45 @@
+---
+- name: create tomcat user
+  user:
+    name: tomcat
+    shell: /bin/nologin
+    create_home: no
+
+- name: download tomcat
+  unarchive:
+    src: https://dlcdn.apache.org/tomcat/tomcat-{{tomcat_major_version}}/v{{tomcat_version}}/bin/apache-tomcat-{{tomcat_version}}.tar.gz
+    dest: "{{tomcat_path}}/"
+    remote_src: yes
+    owner: tomcat
+    group: tomcat
+    validate_certs: no
+
+- name: rename tomcat folder
+  file:
+    src: "{{tomcat_path}}/apache-tomcat-{{tomcat_version}}"
+    path: "{{tomcat_path}}/tomcat"
+    state: link
+
+- name: copy context file
+  copy:
+    src: files/context.xml
+    dest: "{{tomcat_path}}/{{item}}"
+  loop:
+  - tomcat/webapps/host-manager/META-INF/context.xml
+  - tomcat/webapps/manager/META-INF/context.xml
+
+- name: copy user file
+  copy:
+    src: files/tomcat-users.xml
+    dest: "{{tomcat_path}}/tomcat/conf/tomcat-users.xml"
+
+- name: copy service
+  template:
+    src: templates/tomcat.service.j2
+    dest: /etc/systemd/system/tomcat.service
+
+- name: start and enable tomcat
+  systemd:
+    name: tomcat
+    state: started
+    enabled: yes
