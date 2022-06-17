@@ -1,0 +1,31 @@
+---
+- name: add jenkins repo
+  yum_repository:
+    name: jenkins
+    baseurl: http://pkg.jenkins.io/redhat-stable
+    description: Jenkins official repo for Centos7
+    gpgkey: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+    enabled: yes
+    state: present
+
+- name: install Jenkins
+  yum:
+    name: jenkins
+    update_cache: yes
+
+- name: start jenkins
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: wait for jenkins to start
+  wait_for:
+    timeout: 10
+
+- name: get jenkins default key
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword || echo "installed"
+  register: jenkins_admin_key
+
+- name: show jenkins default key
+  debug: msg="{{jenkins_admin_key.stdout}}"

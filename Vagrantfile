@@ -25,8 +25,15 @@ Vagrant.configure("2") do |config|
             subconfig.vm.provision "shell", inline: $script_inject_pubkey
         end
     end
-    config.vm.define "dev-centos" do |subconfig|
+    config.vm.define "ci-server" do |subconfig|
         subconfig.vm.box = "centos/7"
+        subconfig.vm.hostname = "jenkins"
+        subconfig.vm.network "private_network", ip: "192.168.60.254"
+        subconfig.vm.synced_folder "ansible", "/home/vagrant/ansible", type: "rsync", rsync__exclude: ".git", mount_options: ["dmode=755", "fmode=644"]
+        subconfig.vm.provider "virtualbox" do |vb|
+            vb.memory = "6192"
+        end
+        subconfig.vm.provision "shell", inline: $script_inject_pubkey
     end
 
 end

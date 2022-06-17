@@ -1,0 +1,21 @@
+---
+- name: provision jenkins 
+  hosts: ci
+  become: yes
+  vars_files:
+  - vars/vars.yml
+ 
+  tasks:
+  - name: Include distribution specific vars file
+    include_vars: vars/{{ansible_os_family}}-vars.yml
+  - name: install java
+    include_tasks: tasks/java-{{ ansible_os_family }}.yml
+  - name: install maven {{maven_major_version}}
+    include_tasks: tasks/maven.yml
+  - name: install jenkins
+    include_tasks: tasks/jenkins.yml
+  - name: install sonarqube {{sonarqube_version}}
+    include_tasks: tasks/sonarqube.yml
+  - name: install artifactory
+    include_tasks: tasks/artifactory.yml
+  

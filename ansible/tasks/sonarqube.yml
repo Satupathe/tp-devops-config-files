@@ -1,0 +1,33 @@
+---
+- name:  create system user for sonar
+  user:
+    name: sonar
+    createhome: no
+    shell: /bin/nologin
+
+- name: install unzip
+  package:
+    name: unzip
+
+- name: download sonarqube 
+  get_url:
+    url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-{{sonarqube_version}}.zip
+    dest: /opt/
+
+- name: extract sonarqube archive
+  unarchive:
+    src: /opt/sonarqube-{{sonarqube_version}}.zip
+    dest: /opt/sonarqube
+    owner: sonar
+    group: sonar
+    remote_src: yes
+
+- name: send sonarqube service template
+  template:
+    src: templates/sonarqube.service.j2
+    dest: /etc/systemd/system/sonarqube.service
+
+- name: launch sonarqube service
+  systemd:
+    name: sonarqube
+    state: started

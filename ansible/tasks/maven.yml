@@ -5,6 +5,7 @@
     src: https://dlcdn.apache.org/maven/maven-{{maven_major_version}}/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz
     remote_src: yes
     dest: /opt/
+    validate_certs: no
 
 - name: prepare maven env file
   lineinfile:
@@ -14,7 +15,7 @@
   loop:
   - 'export M2_HOME=/opt/apache-maven-{{maven_version}}'
   - 'export M2=$M2_HOME/bin'
-  - 'export PATH=M2:$PATH'
+  - 'export PATH=$M2:$PATH'
 
 - name: run maven.sh
   shell: . /etc/profile.d/maven.sh
