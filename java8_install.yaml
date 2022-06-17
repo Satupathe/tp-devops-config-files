@@ -1,0 +1,28 @@
+---
+
+- name: Java installation
+  hosts: dev:jenkins
+  become: yes
+  tasks:
+  - name: download and install java 
+    yum:
+      name:
+      - java-1.8.0-openjdk
+      - java-1.8.0-openjdk-devel
+
+  - name: variable file creation 
+    copy:
+      dest: /etc/profile.d/java.sh
+      content: |
+        #!/bin/bash
+        export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el7_9.x86_64
+        export PATH=$PATH:$JAVA_HOME/bin:$PATH
+
+  - name: change permissions on java.sh
+    file:  
+      path: /etc/profile.d/java.sh
+      mode: u+x,g+x,o+x
+
+  - name: launch java.sh
+    shell: . /etc/profile.d/java.sh
+  

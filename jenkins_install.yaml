@@ -1,0 +1,26 @@
+---
+
+- name: dependecies installation
+  hosts: jenkins
+  become: yes
+  tasks:
+  - name: Ensure Jenkins Repository is Installed
+    yum_repository:
+      name: jenkins
+      state: present
+      description: Official Jenkins Yum Repo
+      baseurl: http://pkg.jenkins.io/redhat-stable
+      gpgkey: https://jenkins-ci.org/redhat-stable/jenkins.io.key
+      gpgcheck: yes
+      enabled: yes
+  - name: Ensure Jenkins is Installed
+    yum :
+      name: jenkins
+      update_cache: yes
+      state: present
+  - name: Enable and Start the Jenkins Service
+    service:
+      deamon-reload: yes
+      name: jenkins
+      enabled: yes
+      state: started

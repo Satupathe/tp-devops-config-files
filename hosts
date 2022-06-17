@@ -1,0 +1,14 @@
+192.168.60.2
+192.168.60.3
+192.168.60.4
+192.168.60.5
+192.168.60.6
+192.168.60.7
+
+dev ansible_host=192.168.60.2
+jenkins ansible_host=192.168.60.3
+staging ansible_host=192.168.60.4
+prod ansible_host=192.168.60.5
+db ansible_host=192.168.60.6
+monitor ansible_host=192.168.60.7
+kubernetes ansible_host=192.168.60.8

@@ -1,0 +1,11 @@
+---
+
+- name: install SonarScanner plugin
+  hosts: jenkins
+  become: yes
+  tasks:
+  - name: get sonarscanner archive
+    unarchive:
+      src: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+      dest: /opt
+      remote_src: yes

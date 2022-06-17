@@ -1,0 +1,20 @@
+---
+
+- name: dependecies installation
+  hosts: dev:jenkins
+  become: yes
+  tasks:
+  - name: install git v2 dependencies
+    yum:
+      name : https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
+      state: present
+  
+  - name: install git
+    yum:
+      name: git
+      state: present
+  
+  - name: install nano
+    yum: 
+      name: nano
+      state: present

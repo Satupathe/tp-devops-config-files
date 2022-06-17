@@ -1,0 +1,11 @@
+---
+
+- name: Java11 installation
+  hosts: dev:jenkins:prod
+  become: yes
+  tasks:
+  - name: download and install java 
+    yum:
+      name:
+      - java-11-openjdk
+      - java-11-openjdk-devel

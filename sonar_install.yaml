@@ -1,0 +1,18 @@
+---
+
+- name: install Sonarqube
+  hosts: jenkins
+  tasks:
+  - name: install unzip
+    yum:
+      name: unzip
+      state: present
+  
+  - name: unarchive sonarqube
+    unarchive: 
+      src: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.8.54436.zip
+      dest: /opt
+      remote_src: yes
+    
+  - name: activate Sonarqube
+    shell: /opt/sonarqube-8.9.8.54436/bin/linux-x86-64/sonar.sh start

@@ -1,0 +1,11 @@
+---
+
+- name: archiva installation
+  hosts: jenkins
+  become: yes
+  tasks:
+  - name: download and unarchive archive 2.2.8
+    unarchive:
+      src: https://archive.apache.org/dist/archiva/2.2.8/binaries/apache-archiva-2.2.8-bin.tar.gz
+      dest: /opt
+      remote_src: yes

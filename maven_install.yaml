@@ -1,0 +1,29 @@
+---
+
+- name: Maven installation
+  hosts: dev:jenkins
+  become: yes
+  tasks:
+  - name: download and unarchive maven 
+    unarchive:
+      src: https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+      dest: /opt
+      remote_src: yes
+
+  - name: variable file creation 
+    copy:
+      dest: /etc/profile.d/maven.sh
+      content: |
+        #!/bin/bash
+        export M2_HOME=/opt/apache-maven-3.8.6
+        export M2=$M2_HOME/bin
+        export PATH=$PATH:$M2
+
+  - name: change permissions on maven.sh
+    file:  
+      path: /etc/profile.d/maven.sh
+      mode: u+x,g+x,o+x
+
+  - name: launch maven.sh
+    shell: source /etc/profile.d/maven.sh
+    sudo: no 
